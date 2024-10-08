@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { clienteAxios } from '../config/axios';
+import {useState} from 'react';
+import {clienteAxios} from '../config/axios';
 import Swal from 'sweetalert2';
 
 const CheckVehicle = () => {
-    const [formData, setFormData] = useState({ placa: '', fecha: '' });
+    const [formData, setFormData] = useState({placa: '', fecha: ''});
     const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
@@ -19,28 +19,32 @@ const CheckVehicle = () => {
 
         try {
             const response = await clienteAxios.post('api/vehiculos/puede-circular', formData);
-            const { mensaje, vehiculo, puede_circular, hora_actual_servidor, fecha_ingresada } = response.data;
+            const {mensaje, vehiculo, puede_circular, hora_actual_servidor, fecha_ingresada} = response.data;
 
             // Mostrar el resultado de la consulta en un popup de SweetAlert
             Swal.fire({
                 title: 'Resultado de Consulta',
                 html: `
-                    <p><strong>Mensaje:</strong> ${mensaje}</p>
-                    <p><strong>Vehículo:</strong> ${vehiculo.placa}</p>
-                    <p><strong>Puede Circular:</strong> ${puede_circular}</p>
-                    <p><strong>Hora Actual del Servidor:</strong> ${hora_actual_servidor}</p>
-                    <p><strong>Fecha Ingresada:</strong> ${fecha_ingresada}</p>
-                `,
+        <p><strong>Mensaje:</strong> ${mensaje}</p>
+        <p><strong>Placa:</strong> ${vehiculo.placa}</p>
+        <p><strong>Color:</strong> ${vehiculo.color}</p>
+        <p><strong>Modelo:</strong> ${vehiculo.modelo}</p>
+        <p><strong>Chasis:</strong> ${vehiculo.chasis}</p>
+        <p><strong>Puede Circular:</strong> ${puede_circular}</p>
+        <p><strong>Hora Actual:</strong> ${hora_actual_servidor}</p>
+        <p><strong>Fecha Ingresada:</strong> ${fecha_ingresada}</p>
+    `,
                 icon: puede_circular === 'Sí' ? 'success' : 'error',
                 confirmButtonText: 'Aceptar'
             });
+
         } catch (error) {
             if (error.response?.data?.errors) {
                 // Si hay errores específicos de los campos, los asignamos al estado `errors`
                 setErrors(error.response.data.errors);
             } else {
                 // Para cualquier otro error general
-                setErrors({ general: error.response?.data?.error || 'Error al consultar el vehículo.' });
+                setErrors({general: error.response?.data?.error || 'Error al consultar el vehículo.'});
 
                 Swal.fire({
                     title: 'Error',
@@ -54,7 +58,8 @@ const CheckVehicle = () => {
 
     return (
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-8 w-full content-center">
-            <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Consultar si el Vehículo Puede Circular</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Consultar si el Vehículo Puede
+                Circular</h2>
 
             {/* Mostrar error general si existe */}
             {errors.general && <p className="text-red-500 mb-4">{errors.general}</p>}
