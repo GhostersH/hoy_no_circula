@@ -21,7 +21,6 @@ const RegisterVehicle = () => {
             setFormData({ placa: '', color: '', modelo: '', chasis: '' });
         } catch (error) {
             setErrors(error.response?.data?.errors || {});
-            setResponseMessage('Error al registrar el vehículo.');
         }
     };
 
