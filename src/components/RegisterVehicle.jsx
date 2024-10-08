@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { clienteAxios } from '../config/axios';
+import {useState} from 'react';
+import {clienteAxios} from '../config/axios';
 
 const RegisterVehicle = () => {
-    const [formData, setFormData] = useState({ placa: '', color: '', modelo: '', chasis: '' });
+    const [formData, setFormData] = useState({placa: '', color: '', modelo: '', chasis: ''});
     const [responseMessage, setResponseMessage] = useState('');
     const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({...formData, [e.target.name]: e.target.value});
     };
 
     const handleSubmit = async (e) => {
@@ -18,7 +18,7 @@ const RegisterVehicle = () => {
         try {
             const response = await clienteAxios.post('api/vehiculos/registrar', formData);
             setResponseMessage(response.data.message);
-            setFormData({ placa: '', color: '', modelo: '', chasis: '' });
+            setFormData({placa: '', color: '', modelo: '', chasis: ''});
         } catch (error) {
             setErrors(error.response?.data?.errors || {});
         }
